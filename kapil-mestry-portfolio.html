@@ -1,0 +1,2090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="drI4FRSH46m5CMKaKhCZNT6vg_qSLxH0N53aSsdGR58" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kapil Mestry - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* General Styles */
+        :root {
+            --primary-color: #3f51b5; /* Indigo */
+            --secondary-color: #757575; /* Medium Gray */
+            --accent-color: #ff4081; /* Pink/Magenta */
+            --background-color: #f5f5f5; /* Off-white */
+            --text-color: #212121; /* Dark Gray */
+            --light-gray: #e0e0e0; /* Lighter Gray for borders/backgrounds */
+            --dark-gray: #424242; /* Darker Gray for headers/strong elements */
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--dark-gray);
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #283593; /* Darker Indigo */
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #283593; /* Darker Indigo */
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        section {
+            padding: 80px 20px;
+            margin-bottom: 20px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .flex-center { display: flex; justify-content: center; align-items: center; }
+        .hidden { display: none !important; }
+
+        /* Login Modal */
+        #login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .login-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .login-content h2 {
+            margin-bottom: 25px;
+            color: var(--primary-color);
+        }
+
+        .login-content button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+
+        .login-content input {
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+        }
+
+        .login-message {
+            margin-top: 15px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .back-button {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: none;
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            padding: 5px;
+            border-radius: 50%;
+            transition: color 0.3s ease;
+            width: auto; /* Override button width */
+        }
+
+        .back-button:hover {
+            color: var(--dark-gray);
+        }
+
+        /* Header */
+        header {
+            background-color: var(--dark-gray);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        header .logout-btn {
+            background-color: var(--secondary-color);
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+
+        header .logout-btn:hover {
+            background-color: #5a6268;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--dark-gray);
+            padding: 10px 20px;
+            position: sticky;
+            top: 60px; /* Below header */
+            z-index: 998;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0 20px;
+            display: flex;
+            justify-content: center; /* Centered alignment */
+            gap: 40px; /* Increased gap */
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+
+        nav ul li a {
+            color: white;
+            font-weight: 600;
+            padding: 6px 15px; /* Reduced vertical padding */
+            border-radius: var(--border-radius);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 10px;
+            background: none;
+            border: none;
+        }
+
+        .hamburger-menu .bar {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 4px 0;
+            transition: 0.4s;
+        }
+
+        .nav-links.active {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: var(--dark-gray);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            padding: 10px 0;
+            gap: 0;
+        }
+
+        .nav-links.active li {
+            width: 100%;
+            text-align: center;
+        }
+
+        .nav-links.active li a {
+            display: block;
+            padding: 12px 0;
+            border-radius: 0;
+        }
+
+        /* Title Page */
+        #title-page {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            /* Updated background for darker, professional, creative appeal */
+            background: linear-gradient(135deg, #004d40, #1a237e); /* Deep Teal to Dark Navy */
+            color: white; /* Changed text color for contrast */
+            padding: 40px 20px;
+        }
+
+        #title-page h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            animation: slideInLeft 1s ease-out;
+            color: white; /* Ensure heading is white */
+        }
+
+        #title-page p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin-bottom: 30px;
+            animation: fadeIn 1.5s ease-out;
+            color: #e0e0e0; /* Lighter text for summary */
+        }
+
+        #title-page .admin-controls {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        #title-page .admin-controls textarea {
+            min-height: 120px;
+        }
+
+        /* About Me */
+        #about-me .traits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px; /* Reduced gap between trait items */
+            margin-top: 30px;
+        }
+
+        #about-me .trait-item {
+            background-color: var(--light-gray);
+            padding: 10px 20px; /* Reduced vertical padding */
+            border-radius: var(--border-radius);
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        #about-me .trait-item .edit-buttons {
+            position: absolute;
+            top: 5px; /* Adjusted for smaller buttons */
+            right: 5px; /* Adjusted for smaller buttons */
+            display: flex;
+            gap: 2px; /* Reduced gap between buttons */
+        }
+
+        #about-me .trait-item .edit-buttons button {
+            background: none;
+            border: none;
+            color: var(--secondary-color);
+            font-size: 0.9rem; /* Slightly increased font size for better clickability */
+            padding: 4px 6px; /* Slightly increased padding for better clickability */
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        #about-me .trait-item .edit-buttons button:hover {
+            color: var(--primary-color);
+        }
+
+        #about-me .add-trait-form {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        /* Professional Journey */
+        #professional-journey .job-entry {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        #professional-journey .job-entry h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        #professional-journey .job-entry p {
+            margin-bottom: 5px;
+            font-size: 0.95rem;
+        }
+
+        #professional-journey .job-entry .responsibilities {
+            margin-top: 15px;
+            border-top: 1px dashed var(--light-gray);
+            padding-top: 15px;
+            display: none; /* Hidden by default, shown on hover */
+        }
+
+        #professional-journey .job-entry:hover .responsibilities {
+            display: block;
+        }
+
+        #professional-journey .linkedin-btn {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #0077B5; /* LinkedIn blue */
+            color: white; /* Added for visibility */
+        }
+
+        #professional-journey .linkedin-btn:hover {
+            background-color: #005f93;
+        }
+
+        #professional-journey .admin-controls button {
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+
+        #professional-journey .edit-form {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+        }
+
+        #professional-journey .edit-form textarea {
+            min-height: 100px;
+        }
+
+        #professional-journey .skills-tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        /* Re-usable class for 2-column lists */
+        .two-column-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px; /* Smaller gap for list items */
+            list-style: none; /* Remove default list bullets */
+            padding: 0;
+            margin: 0;
+        }
+
+        .two-column-list li {
+            background-color: var(--background-color);
+            padding: 8px 12px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        /* Creative Portfolio */
+        #creative-portfolio .youtube-link {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #FF0000; /* YouTube red */
+            color: white; /* Added for visibility */
+        }
+
+        #creative-portfolio .youtube-link:hover {
+            background-color: #cc0000;
+        }
+
+        #creative-portfolio .subsection-content {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+        }
+
+        #creative-portfolio .admin-controls textarea {
+            width: calc(100% - 20px);
+            min-height: 80px;
+        }
+
+
+        /* Blog & Updates */
+        #blog-updates {
+            position: relative; /* Needed for positioning the redirect button */
+        }
+        #blog-updates .blog-post {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        #blog-updates .blog-post h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        #blog-updates .blog-post .post-meta {
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        #blog-updates .blog-post img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        #blog-updates .admin-controls {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        #blog-updates .add-post-form {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        /* Removed .view-all-blogs-btn styling as the button is removed */
+
+
+        /* Contact Me */
+        #contact-me .contact-form {
+            display: flex;
+            flex-direction: column;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #contact-me .contact-form label {
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        #contact-me .contact-form button {
+            margin-top: 15px;
+        }
+
+        /* Admin Panel: User Forms */
+        #user-forms-panel {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        #user-forms-panel h3 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .form-log-container {
+            max-height: 300px; /* Fixed height for scrollability */
+            overflow-y: auto;
+            border: 1px solid var(--secondary-color);
+            border-radius: var(--border-radius);
+            background-color: white;
+        }
+
+        .form-log-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .form-log-table th, .form-log-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .form-log-table th {
+            background-color: var(--dark-gray);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .form-log-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .form-log-table .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .form-log-table .action-buttons button {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            padding: 5px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            width: auto;
+        }
+
+        .form-log-table .action-buttons button:hover {
+            color: #283593; /* Darker Indigo */
+        }
+
+        .form-log-table .undo-message {
+            color: var(--accent-color);
+            font-size: 0.85rem;
+            margin-left: 10px;
+        }
+
+        /* Guest Restriction Panel */
+        #guest-restriction-panel {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        #guest-restriction-panel h3 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        #guest-restriction-panel .section-checkboxes label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        #guest-restriction-panel .section-checkboxes input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        /* PDF Download Button */
+        #download-pdf-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 990;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        #download-pdf-btn:hover {
+            background-color: #d81b60; /* Darker Accent */
+            transform: translateY(-3px);
+        }
+
+        /* PDF Modal */
+        #pdf-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+
+        .pdf-modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: fadeIn 0.5s ease-out;
+            position: relative;
+        }
+
+        .pdf-modal-content h2 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .pdf-modal-content .close-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+            cursor: pointer;
+            width: auto;
+        }
+
+        .pdf-modal-content .close-button:hover {
+            color: var(--dark-gray);
+        }
+
+        .pdf-modal-content .section-checkboxes label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .pdf-modal-content .section-checkboxes input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        .pdf-modal-content .pdf-preview-area {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--background-color);
+            border: 1px dashed var(--secondary-color);
+            border-radius: var(--border-radius);
+            min-height: 200px;
+            overflow-y: auto;
+        }
+
+        .pdf-modal-content .pdf-preview-area textarea {
+            width: calc(100% - 20px);
+            min-height: 150px;
+            margin-bottom: 10px;
+        }
+
+        .pdf-modal-content .pdf-controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Custom Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Higher than other content */
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            width: 90%;
+            max-width: 450px; /* Default max-width for generic modals */
+            animation: fadeIn 0.3s ease-out;
+        }
+        /* Specific override for job edit modal */
+        #custom-job-edit-modal .modal-content {
+            max-width: 550px; /* Further reduced width for job edit modal */
+            font-size: 0.85rem; /* Slightly smaller font size */
+        }
+
+
+        .modal-content h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .modal-content p {
+            margin-bottom: 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            max-width: 120px;
+        }
+
+        .modal-buttons .cancel-button {
+            background-color: var(--secondary-color);
+        }
+
+        .modal-buttons .cancel-button:hover {
+            background-color: #5a6268;
+        }
+
+        /* Input Modal Specifics */
+        .modal-input-field {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px; /* Reduced margin bottom */
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+        }
+        /* Adjust font size for input fields within the job edit modal */
+        #custom-job-edit-modal .modal-input-field {
+            font-size: 0.85rem; /* Smaller font for inputs in job edit modal */
+        }
+
+        .modal-input-field.textarea {
+            min-height: 120px; /* Increased height for textarea */
+            resize: vertical;
+        }
+
+        /* Modal form fields specific styling */
+        .modal-form-fields {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .modal-form-fields label {
+            display: block;
+            margin-bottom: 5px; /* Reduced margin bottom */
+            font-weight: 600;
+            color: var(--dark-gray);
+        }
+
+        .modal-form-fields input,
+        .modal-form-fields textarea {
+            width: 100%; /* Adjust width to fill container */
+            box-sizing: border-box; /* Include padding and border in the element's total width */
+            margin-bottom: 10px; /* Reduced margin bottom */
+        }
+
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity = 1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .saving-message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            z-index: 1002;
+            animation: fadeIn 0.3s ease-out, slideInRight 0.3s ease-out;
+        }
+
+        .saving-message.success {
+            background-color: var(--accent-color);
+        }
+
+        .saving-message.error {
+            background-color: #dc3545;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px 15px;
+            }
+
+            header .logo {
+                margin-bottom: 10px;
+            }
+
+            header .logout-btn {
+                align-self: flex-end;
+            }
+
+            nav {
+                top: 75px; /* Adjust for header height */
+                padding: 0;
+            }
+
+            nav ul {
+                display: none; /* Hidden by default for mobile */
+                flex-direction: column;
+                width: 100%;
+                background-color: var(--dark-gray);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            nav ul li {
+                text-align: center;
+                width: 100%;
+            }
+
+            nav ul li a {
+                display: block;
+                padding: 12px 0;
+                border-radius: 0;
+            }
+
+            .hamburger-menu {
+                display: flex;
+                position: absolute;
+                right: 15px;
+                top: 20px;
+            }
+
+            #title-page h1 {
+                font-size: 2.5rem;
+            }
+
+            #title-page p {
+                font-size: 1.2rem;
+            }
+
+            section {
+                padding: 40px 15px;
+            }
+
+            #about-me .traits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .login-content, .pdf-modal-content {
+                padding: 25px;
+            }
+
+            #download-pdf-btn {
+                bottom: 15px;
+                left: 15px;
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+
+            #professional-journey .skills-tools-grid,
+            .two-column-list {
+                grid-template-columns: 1fr; /* Single column on small screens */
+            }
+            /* Responsive adjustments for job edit modal */
+            #custom-job-edit-modal .modal-content {
+                max-width: 90%; /* Adjust max-width for smaller screens */
+                font-size: 0.85rem; /* Further reduce font size on small screens */
+            }
+            #custom-job-edit-modal .modal-input-field {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #title-page h1 {
+                font-size: 2rem;
+            }
+
+            #title-page p {
+                font-size: 1rem;
+            }
+
+            .login-content {
+                padding: 20px;
+            }
+
+            .login-content h2 {
+                font-size: 1.5rem;
+            }
+
+            .form-log-table th, .form-log-table td {
+                padding: 8px;
+                font-size: 0.85rem;
+            }
+
+            .form-log-table .action-buttons {
+                flex-direction: column;
+                gap: 2px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Login Modal -->
+    <div id="login-modal">
+        <div class="login-content" id="login-window-1">
+            <h2>Welcome to Kapil Mestry's Portfolio</h2>
+            <button id="admin-login-btn">Admin Login</button>
+            <button id="guest-login-btn">Continue as Guest</button>
+        </div>
+
+        <div class="login-content hidden" id="login-window-2">
+            <button class="back-button" id="back-to-window-1"><i class="fas fa-arrow-left"></i></button>
+            <h2>Admin Login</h2>
+            <input type="text" id="admin-username" placeholder="Username">
+            <input type="password" id="admin-password" placeholder="Password">
+            <button id="admin-submit-btn">Login</button>
+            <p id="login-message" class="login-message"></p>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden until login) -->
+    <div id="main-content" class="hidden">
+        <!-- Sticky Header -->
+        <header>
+            <div class="logo">Kapil Mestry</div>
+            <button id="logout-btn" class="logout-btn">Logout</button>
+        </header>
+
+        <!-- Sticky Navigation -->
+        <nav>
+            <button class="hamburger-menu" id="hamburger-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="#title-page">Home</a></li>
+                <li><a href="#about-me">About Me</a></li>
+                <li><a href="#professional-journey">Professional Journey</a></li>
+                <li><a href="#creative-portfolio">Creative Portfolio</a></li>
+                <li><a href="#blog-updates">Blog & Updates</a></li>
+                <li><a href="#contact-me">Contact Me</a></li>
+                <li class="admin-only"><a href="#admin-panel-sections">Admin Panel</a></li>
+            </ul>
+        </nav>
+
+        <!-- Title Page Section -->
+        <section id="title-page">
+            <h1 id="title-heading">Kapil Mestry</h1>
+            <p id="title-summary">Product Design and Development Engineer | Six Sigma Green Belt | AI Tools Expert</p>
+
+            <div class="admin-controls hidden">
+                <h3>Edit Title Page Content</h3>
+                <label for="edit-title-heading">Heading:</label>
+                <input type="text" id="edit-title-heading">
+                <label for="edit-title-summary">Summary:</label>
+                <textarea id="edit-title-summary"></textarea>
+                <button class="save-section-btn" data-section="title-page">Save Title Page</button>
+            </div>
+        </section>
+
+        <!-- About Me Section -->
+        <section id="about-me">
+            <h2>About Me</h2>
+            <p>As an ENTJ (Commander), Kapil is a natural-born leader with an unparalleled drive to turn visions into reality. His strategic mind excels at seeing the big picture, identifying long-term goals, and devising efficient plans to achieve them.</p>
+
+            <h3>Influential Traits</h3>
+            <div id="about-me-traits" class="traits-grid">
+                <!-- Traits will be loaded here by JS -->
+            </div>
+
+            <div class="admin-controls hidden add-trait-form">
+                <h3>Add New Trait</h3>
+                <input type="text" id="new-trait-title" placeholder="New Trait Title">
+                <button id="add-trait-btn">Add Trait</button>
+                <button class="save-section-btn" data-section="about-me">Save About Me</button>
+            </div>
+        </section>
+
+        <!-- Professional Journey Section -->
+        <section id="professional-journey">
+            <h2>Professional Journey</h2>
+            <div id="job-entries">
+                <!-- Job entries will be loaded here by JS -->
+            </div>
+
+            <a href="https://www.linkedin.com/in/kapil-mestry-14a809b0/" target="_blank" class="linkedin-btn button">
+                <i class="fab fa-linkedin"></i> Visit my LinkedIn profile
+            </a>
+
+            <div class="admin-controls hidden">
+                <h3>Add New Job Entry</h3>
+                <div class="edit-form">
+                    <label for="new-job-title">Job Title:</label>
+                    <input type="text" id="new-job-title" placeholder="e.g., Product Design & Development Engineer">
+                    <label for="new-company-name">Company Name:</label>
+                    <input type="text" id="new-company-name" placeholder="e.g., Cummins India">
+                    <label for="new-duration">Duration:</label>
+                    <input type="text" id="new-duration" placeholder="e.g., 1st March 2022 till date">
+                    <label for="new-responsibilities">Roles & Responsibilities (one per line):</label>
+                    <textarea id="new-responsibilities" placeholder="Lead root cause analysis...&#10;Coordinate and make decisions..."></textarea>
+                    <button id="add-job-btn">Add Job</button>
+                </div>
+
+                <h3>Skills, Certifications, Tools, Projects</h3>
+                <div class="edit-form">
+                    <label for="edit-skills">Skills (one per line):</label>
+                    <textarea id="edit-skills"></textarea>
+                    <label for="edit-certifications">Certifications (one per line):</label>
+                    <textarea id="edit-certifications"></textarea>
+                    <label for="edit-tools">Software Skills/Tools (one per line):</label>
+                    <textarea id="edit-tools"></textarea>
+                    <label for="edit-achievements">Key Achievements (one per line):</label>
+                    <textarea id="edit-achievements"></textarea>
+                    <button class="save-section-btn" data-section="professional-journey">Save Professional Journey</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Creative Portfolio Section -->
+        <section id="creative-portfolio">
+            <h2>Creative Portfolio</h2>
+            <p id="creative-summary">Kapil's creative expression extends beyond engineering, embracing a diverse range of passions from sports and music to sketching and design. This section highlights his multifaceted talents and achievements outside the professional realm.</p>
+            <a href="https://www.youtube.com/@kaps2210" target="_blank" class="youtube-link button">
+                <i class="fab fa-youtube"></i> Visit my YouTube Channel
+            </a>
+
+            <div class="subsection-content">
+                <h3>Sports</h3>
+                <ul id="sports-content" class="two-column-list"></ul>
+                <div class="admin-controls hidden">
+                    <textarea id="edit-sports-content"></textarea>
+                </div>
+            </div>
+
+            <div class="subsection-content">
+                <h3>Extra-Curricular Activities</h3>
+                <ul id="extra-curricular-content" class="two-column-list"></ul>
+                <div class="admin-controls hidden">
+                    <textarea id="edit-extra-curricular-content"></textarea>
+                </div>
+            </div>
+
+            <!-- Removed Key Achievements (Creative/Personal) as per request -->
+
+            <div class="subsection-content">
+                <h3>Hobbies</h3>
+                <ul id="hobbies-content" class="two-column-list"></ul>
+                <div class="admin-controls hidden">
+                    <textarea id="edit-hobbies-content"></textarea>
+                </div>
+            </div>
+
+            <div class="admin-controls hidden">
+                <button class="save-section-btn" data-section="creative-portfolio">Save Creative Portfolio</button>
+            </div>
+        </section>
+
+        <!-- Blog & Updates Section -->
+        <section id="blog-updates">
+            <h2>Blog & Updates</h2>
+            <div id="blog-posts">
+                <!-- Blog posts will be loaded here by JS -->
+            </div>
+
+            <!-- Removed the "View All Blogs (Full Screen)" button as per user request -->
+
+            <div class="admin-controls hidden add-post-form">
+                <h3>Add New Blog Post</h3>
+                <input type="text" id="new-blog-title" placeholder="Post Title">
+                <textarea id="new-blog-content" placeholder="Write your blog post content here..."></textarea>
+                <label for="new-blog-image">Upload Image:</label>
+                <input type="file" id="new-blog-image" accept="image/*">
+                <button id="add-blog-post-btn">Add Post</button>
+                <button class="save-section-btn" data-section="blog-updates">Save Blog & Updates</button>
+            </div>
+        </section>
+
+        <!-- Contact Me Section -->
+        <section id="contact-me">
+            <h2>Contact Me</h2>
+            <form id="contact-form" class="contact-form">
+                <label for="contact-name">Name:</label>
+                <input type="text" id="contact-name" required>
+                <label for="contact-email">Email:</label>
+                <input type="email" id="contact-email" required>
+                <label for="contact-message">Message:</label>
+                <textarea id="contact-message" required></textarea>
+                <button type="submit">Send Message</button>
+                <p id="contact-form-message"></p>
+            </form>
+
+            <!-- Admin Panel: User Forms -->
+            <div id="user-forms-panel" class="admin-only hidden">
+                <h3>User Forms Log</h3>
+                <div class="form-log-container">
+                    <table class="form-log-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Message</th>
+                                <th>Timestamp</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="user-forms-log-body">
+                            <!-- Form submissions will be loaded here by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <button class="save-section-btn" data-section="contact-me-log" style="margin-top: 20px;">Save User Forms</button>
+            </div>
+        </section>
+
+        <!-- Admin Panel: Guest Restriction Panel -->
+        <section id="admin-panel-sections" class="admin-only hidden">
+            <h2>Admin Panel</h2>
+            <div id="guest-restriction-panel">
+                <h3>Guest Mode Section Visibility</h3>
+                <div class="section-checkboxes" id="guest-visibility-checkboxes">
+                    <!-- Checkboxes will be generated by JS -->
+                </div>
+                <button class="save-section-btn" data-section="guest-restrictions">Save Guest Restrictions</button>
+            </div>
+        </section>
+
+        <!-- PDF Download Button -->
+        <button id="download-pdf-btn">
+            <i class="fas fa-file-pdf"></i> Download Profile
+        </button>
+
+        <!-- PDF Generation Modal -->
+        <div id="pdf-modal" class="hidden">
+            <div class="pdf-modal-content">
+                <button class="close-button" id="close-pdf-modal"><i class="fas fa-times"></i></button>
+                <h2>Download Profile as PDF</h2>
+                <p>Select sections to include in the PDF:</p>
+                <div class="section-checkboxes" id="pdf-section-checkboxes">
+                    <!-- Checkboxes for PDF will be generated by JS -->
+                </div>
+
+                <div id="pdf-admin-controls" class="admin-controls hidden">
+                    <h3>PDF Content Preview & Formatting (Admin Only)</h3>
+                    <textarea id="pdf-preview-textarea" placeholder="Edit content for PDF here..."></textarea>
+                    <label for="pdf-font-size">Font Size:</label>
+                    <input type="number" id="pdf-font-size" value="12" min="8" max="24">
+                    <label for="pdf-line-height">Line Height:</label>
+                    <input type="number" id="pdf-line-height" value="1.5" step="0.1" min="1" max="3">
+                    <button id="save-pdf-formatting-btn">Save PDF Formatting</button>
+                </div>
+
+                <div class="pdf-controls">
+                    <button id="generate-pdf-btn">Generate PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Confirmation Modal -->
+    <div id="custom-confirm-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3 id="confirm-modal-title"></h3>
+            <p id="confirm-modal-message"></p>
+            <div class="modal-buttons">
+                <button id="confirm-modal-yes">Yes</button>
+                <button id="confirm-modal-no" class="cancel-button">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Input Modal (Single Field) -->
+    <div id="custom-input-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3 id="input-modal-title"></h3>
+            <p id="input-modal-message"></p>
+            <!-- This div will hold either an input or a textarea -->
+            <div id="input-modal-field-container"></div>
+            <div class="modal-buttons">
+                <button id="input-modal-ok">OK</button>
+                <button id="input-modal-cancel" class="cancel-button">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Job Edit Modal (Multi-Field) -->
+    <div id="custom-job-edit-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3 id="job-edit-modal-title">Edit Job Entry</h3>
+            <div class="modal-form-fields">
+                <label for="edit-job-title-field">Job Title:</label>
+                <input type="text" id="edit-job-title-field" class="modal-input-field">
+
+                <label for="edit-company-name-field">Company Name:</label>
+                <input type="text" id="edit-company-name-field" class="modal-input-field">
+
+                <label for="edit-duration-field">Duration:</label>
+                <input type="text" id="edit-duration-field" class="modal-input-field">
+
+                <label for="edit-responsibilities-field">Roles & Responsibilities (one per line):</label>
+                <textarea id="edit-responsibilities-field" class="modal-input-field textarea"></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button id="job-edit-modal-save">Save</button>
+                <button id="job-edit-modal-cancel" class="cancel-button">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- jsPDF Library (dynamically loaded) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        // Global state variables
+        let isAdmin = false;
+        let isLoggedIn = false;
+        let portfolioData = {}; // Stores all website content
+        let userFormsLog = []; // Stores contact form submissions
+        let guestSectionVisibility = {}; // Stores visibility settings for guest mode
+        let pdfFormatting = { fontSize: 12, lineHeight: 1.5 }; // Stores PDF formatting preferences
+        let lastDeletedFormMessage = null; // For undo functionality
+
+        // DOM Elements
+        const loginModal = document.getElementById('login-modal');
+        const loginWindow1 = document.getElementById('login-window-1');
+        const loginWindow2 = document.getElementById('login-window-2');
+        const adminLoginBtn = document.getElementById('admin-login-btn');
+        const guestLoginBtn = document.getElementById('guest-login-btn');
+        const backToWindow1Btn = document.getElementById('back-to-window-1');
+        const adminUsernameInput = document.getElementById('admin-username');
+        const adminPasswordInput = document.getElementById('admin-password');
+        const adminSubmitBtn = document.getElementById('admin-submit-btn');
+        const loginMessage = document.getElementById('login-message');
+        const mainContent = document.getElementById('main-content');
+        const logoutBtn = document.getElementById('logout-btn');
+        const hamburgerMenu = document.getElementById('hamburger-menu');
+        const navLinks = document.querySelector('.nav-links');
+        const adminOnlyElements = document.querySelectorAll('.admin-only');
+        const adminControls = document.querySelectorAll('.admin-controls');
+        const saveSectionBtns = document.querySelectorAll('.save-section-btn');
+        const downloadPdfBtn = document.getElementById('download-pdf-btn');
+        const pdfModal = document.getElementById('pdf-modal');
+        const closePdfModalBtn = document.getElementById('close-pdf-modal');
+        const pdfSectionCheckboxes = document.getElementById('pdf-section-checkboxes');
+        const generatePdfBtn = document.getElementById('generate-pdf-btn');
+        const pdfAdminControls = document.getElementById('pdf-admin-controls');
+        const pdfPreviewTextarea = document.getElementById('pdf-preview-textarea');
+        const pdfFontSizeInput = document.getElementById('pdf-font-size');
+        const pdfLineHeightInput = document.getElementById('pdf-line-height');
+        const savePdfFormattingBtn = document.getElementById('save-pdf-formatting-btn');
+
+        // Custom Modal Elements
+        const customConfirmModal = document.getElementById('custom-confirm-modal');
+        const confirmModalTitle = document.getElementById('confirm-modal-title');
+        const confirmModalMessage = document.getElementById('confirm-modal-message');
+        const confirmModalYesBtn = document.getElementById('confirm-modal-yes');
+        const confirmModalNoBtn = document.getElementById('confirm-modal-no');
+
+        const customInputModal = document.getElementById('custom-input-modal');
+        const inputModalTitle = document.getElementById('input-modal-title');
+        const inputModalMessage = document.getElementById('input-modal-message');
+        const inputModalFieldContainer = document.getElementById('input-modal-field-container'); // Container for dynamic input/textarea
+        let currentInputField = null; // To hold reference to the actual input/textarea element
+        const inputModalOkBtn = document.getElementById('input-modal-ok');
+        const inputModalCancelBtn = document.getElementById('input-modal-cancel');
+
+        // Custom Job Edit Modal Elements
+        const customJobEditModal = document.getElementById('custom-job-edit-modal');
+        const editJobTitleField = document.getElementById('edit-job-title-field');
+        const editCompanyNameField = document.getElementById('edit-company-name-field');
+        const editDurationField = document.getElementById('edit-duration-field');
+        const editResponsibilitiesField = document.getElementById('edit-responsibilities-field');
+        const jobEditModalSaveBtn = document.getElementById('job-edit-modal-save');
+        const jobEditModalCancelBtn = document.getElementById('job-edit-modal-cancel');
+
+        // Initial Data Structure (Default content)
+        const defaultPortfolioData = {
+            'title-page': {
+                heading: 'Kapil Mestry',
+                summary: 'Product Design and Development Engineer | Six Sigma Green Belt | AI Tools Expert'
+            },
+            'about-me': {
+                traits: [
+                    'Authenticity', 'Loyalty', 'Altruism', 'Emotional Intelligence',
+                    'Natural Leadership', 'Strategic Vision', 'Process Optimization', 'Ambitious',
+                    'Drive for Self-Improvement', 'Logical Approach', 'Goal-Oriented', 'Self-Confident'
+                ]
+            },
+            'professional-journey': {
+                jobs: [
+                    {
+                        title: 'Product Design & Development Engineer',
+                        company: 'Cummins India, Pune',
+                        duration: '1st March 2022 till date',
+                        responsibilities: [
+                            'Lead root cause analysis and implement corrective actions to resolve moderately complex issues at the component, system, or service level.',
+                            'Coordinate and make decisions across diverse cross-functional teams, ensuring alignment on product objectives.',
+                            'Provide technical support across Design, Applications Engineering, Manufacturing, Assembly Quality, Customer Quality, Supplier Quality, and Purchasing teams to achieve shared goals.',
+                            'Execute established technical tasks at the sub-system and component levels for both current and next-generation products.',
+                            'Lead engineering change activities, including component localization, concept development, prototyping, and validation throughout the product lifecycle.',
+                            'Drive technical documentation and design reviews to support continuous product improvement.',
+                            'Lead integration of new applications into existing platforms using CAD and DMU sign-offs.',
+                            'Balance technical and commercial considerations to support business case development and proof of concept approvals.',
+                            'Continuously leverage cross-functional expertise in both new and existing product development projects.',
+                            'Drive global collaboration to address product quality issues and implement long-term solutions.',
+                            'Strong understanding of diesel engine components and off-highway vehicle applications.',
+                            'Mentor and guide junior engineers and interns, fostering technical growth and team development.'
+                        ]
+                    },
+                    {
+                        title: 'Applied Mechanics Engineer NVH and Quality representative',
+                        company: 'Cummins India, Pune',
+                        duration: '4 years',
+                        responsibilities: [
+                            'Lead engine-level vibration testing, modal wrap and tap testing and data analysis.',
+                            'Worked with sensors and instrumentation including tri-axial accelerometers, LVDTs, RVDTs, encoders, and angular accelerometers.',
+                            'Drive Quality measures and KPIs using collaborative interactions with the team.',
+                            'Reduced report generation time by 40% for Vibration analysis, FEAD and valve motion using advanced Microsoft Excel and PowerPoint.',
+                            'Developed capability for Exhaust manifold thermal growth and Valve motion measurement using LVDTs.',
+                            'Sound knowledge of FEAD (Front End Accessory Drive).',
+                            'Competent in performing SWOT analysis and CAPA (Corrective and Preventive Action) processes.'
+                        ]
+                    },
+                    {
+                        title: 'Sr. Engineer- Sales & Marketing',
+                        company: 'Induction Equipment Private Limited',
+                        duration: '6 months',
+                        responsibilities: []
+                    },
+                    {
+                        title: 'ME planning & Group Leader- Body-shop Technical Office',
+                        company: 'Volkswagen, Pune',
+                        duration: '2 years',
+                        responsibilities: []
+                    }
+                ],
+                skills: [
+                    'Product Design', 'Cross functional collaboration', 'Goal and Detail oriented',
+                    'Diversified Domain knowledge', 'First Time Right approach', 'Quality mindset',
+                    'Clear communication', 'Meeting effectiveness', 'Knowledge seeker', 'Excellence', 'Caring'
+                ],
+                certifications: [
+                    'Six Sigma Green Belt', 'Six Sigma Product Problem solving Expert', 'BE10x certified in AI tools'
+                ],
+                tools: [
+                    'CATIA V5', 'CREO', 'Microsoft Power Bi', 'Minitab', 'Advance Excel', 'Advance PowerPoint',
+                    'Windchill PLM', 'AI tools for Office work'
+                ],
+                achievements: [
+                    'Residential Interior Design: Independently designed and executed the interior of personal residence, achieving high precision in execution with effective cost optimization strategies.',
+                    'Manual & Autonomous Robot Design: Designed the manual robot and developed the logic for the autonomous robot\'s travel path, contributing to national level ROBOCON competition.',
+                    'Industrial Sugarcane Crusher: Modeled a 3-roller sugarcane crusher using CATIA V5 for Vidhata Industries, Kolhapur, as part of a third-year engineering project.'
+                ]
+            },
+            'creative-portfolio': {
+                summary: 'Kapil\'s creative expression extends beyond engineering, embracing a diverse range of passions from sports and music to sketching and design. This section highlights his multifaceted talents and achievements outside the professional realm.',
+                sports: 'Cricket\nBadminton\nFootball\nChess/Carrom\nBasketball\nTable Tennis\nCycling\nBike Riding',
+                extraCurricular: 'Winner- Super sketch at Mood Indigo, IIT Powai\nCultural Secretary at GCOEARA\nWinner VW\'s Got talent\nWinner- Quality week painting competition at VW\nWinner -Safety week painting at Cummins\nRunner Up- Contraption Tech Econ at Cummins\nWinner- EBU Utsav at Cummins\nWinner - Carrom Competition at Cummins',
+                hobbies: 'Singing\nSketching\nComposing\nTravelling\nDancing\nGaming\nMusic\nSpirituality\nYoga'
+            },
+            'blog-updates': {
+                posts: [
+                    {
+                        id: 'post1',
+                        title: 'Welcome to My Portfolio Blog!',
+                        date: 'July 19, 2025',
+                        content: 'This is the first post on my portfolio blog. Here, I will share updates on my projects, thoughts on industry trends, and insights from my professional journey. Stay tuned for more!',
+                        image: ''
+                    }
+                ]
+            }
+        };
+
+        const defaultGuestVisibility = {
+            'title-page': true,
+            'about-me': true,
+            'professional-journey': true,
+            'creative-portfolio': true,
+            'blog-updates': true,
+            'contact-me': true,
+            'admin-panel-sections': false // Admin panel always hidden for guest
+        };
+
+
+        // --- Storage Functions ---
+        function saveData() {
+            try {
+                localStorage.setItem('portfolioData', JSON.stringify(portfolioData));
+                localStorage.setItem('userFormsLog', JSON.stringify(userFormsLog));
+                localStorage.setItem('guestSectionVisibility', JSON.stringify(guestSectionVisibility));
+                localStorage.setItem('pdfFormatting', JSON.stringify(pdfFormatting));
+                showSavingMessage('✅ Data saved successfully.', 'success');
+            } catch (e) {
+                console.error('Error saving data to localStorage:', e);
+                showSavingMessage('❌ Error while saving data.', 'error');
+            }
+        }
+
+        function loadData() {
+            try {
+                const storedPortfolioData = localStorage.getItem('portfolioData');
+                const storedUserFormsLog = localStorage.getItem('userFormsLog');
+                const storedGuestVisibility = localStorage.getItem('guestSectionVisibility');
+                const storedPdfFormatting = localStorage.getItem('pdfFormatting');
+
+                portfolioData = storedPortfolioData ? JSON.parse(storedPortfolioData) : defaultPortfolioData;
+                userFormsLog = storedUserFormsLog ? JSON.parse(storedUserFormsLog) : [];
+                guestSectionVisibility = storedGuestVisibility ? JSON.parse(storedGuestVisibility) : defaultGuestVisibility;
+                pdfFormatting = storedPdfFormatting ? JSON.parse(storedPdfFormatting) : { fontSize: 12, lineHeight: 1.5 };
+
+            } catch (e) {
+                console.error('Error loading data from localStorage, using default data:', e);
+                portfolioData = defaultPortfolioData;
+                userFormsLog = [];
+                guestSectionVisibility = defaultGuestVisibility;
+                pdfFormatting = { fontSize: 12, lineHeight: 1.5 };
+            }
+        }
+
+        function showSavingMessage(message, type) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `saving-message ${type}`;
+            msgDiv.textContent = message;
+            document.body.appendChild(msgDiv);
+
+            setTimeout(() => {
+                msgDiv.style.opacity = '0';
+                msgDiv.style.transform = 'translateX(100%)';
+                msgDiv.addEventListener('transitionend', () => msgDiv.remove());
+            }, 2000);
+        }
+
+        // --- Custom Modal Logic (for single field input and confirmation) ---
+        let confirmCallback = null;
+        let inputCallback = null;
+
+        function showConfirmModal(title, message, onConfirm) {
+            confirmModalTitle.textContent = title;
+            confirmModalMessage.textContent = message;
+            confirmCallback = onConfirm; // Store the callback function
+            customConfirmModal.classList.remove('hidden');
+        }
+
+        function hideConfirmModal() {
+            customConfirmModal.classList.add('hidden');
+            confirmCallback = null; // Clear the callback
+        }
+
+        confirmModalYesBtn.addEventListener('click', () => {
+            if (confirmCallback) {
+                confirmCallback(true);
+            }
+            hideConfirmModal();
+        });
+
+        confirmModalNoBtn.addEventListener('click', () => {
+            if (confirmCallback) {
+                confirmCallback(false);
+            }
+            hideConfirmModal();
+        });
+
+        function showInputModal(title, message, defaultValue, onInputConfirm, isTextArea = false) {
+            inputModalTitle.textContent = title;
+            inputModalMessage.textContent = message;
+            inputModalFieldContainer.innerHTML = ''; // Clear previous content
+
+            if (isTextArea) {
+                currentInputField = document.createElement('textarea');
+                currentInputField.className = 'modal-input-field textarea';
+                currentInputField.rows = 5; // Default rows for textarea
+            } else {
+                currentInputField = document.createElement('input');
+                currentInputField.type = 'text';
+                currentInputField.className = 'modal-input-field';
+            }
+            currentInputField.value = defaultValue;
+            inputModalFieldContainer.appendChild(currentInputField);
+
+            inputCallback = onInputConfirm; // Store the callback function
+            customInputModal.classList.remove('hidden');
+            currentInputField.focus(); // Focus on the input field
+        }
+
+        function hideInputModal() {
+            customInputModal.classList.add('hidden');
+            inputCallback = null; // Clear the callback
+            currentInputField = null; // Clear reference
+        }
+
+        inputModalOkBtn.addEventListener('click', () => {
+            if (inputCallback && currentInputField) {
+                inputCallback(currentInputField.value);
+            }
+            hideInputModal();
+        });
+
+        inputModalCancelBtn.addEventListener('click', () => {
+            if (inputCallback) {
+                inputCallback(null); // Indicate cancellation
+            }
+            hideInputModal();
+        });
+
+        // --- Custom Job Edit Modal Logic (for multi-field job entry editing) ---
+        let jobEditCallback = null;
+        let currentJobIndex = -1;
+
+        function showJobEditModal(job, index, onSave) {
+            currentJobIndex = index;
+            editJobTitleField.value = job.title;
+            editCompanyNameField.value = job.company;
+            editDurationField.value = job.duration;
+            editResponsibilitiesField.value = job.responsibilities.join('\n');
+            jobEditCallback = onSave;
+            customJobEditModal.classList.remove('hidden');
+        }
+
+        function hideJobEditModal() {
+            customJobEditModal.classList.add('hidden');
+            jobEditCallback = null;
+            currentJobIndex = -1;
+        }
+
+        jobEditModalSaveBtn.addEventListener('click', () => {
+            if (jobEditCallback) {
+                const updatedJob = {
+                    title: editJobTitleField.value.trim(),
+                    company: editCompanyNameField.value.trim(),
+                    duration: editDurationField.value.trim(),
+                    responsibilities: editResponsibilitiesField.value.split('\n').map(r => r.trim()).filter(r => r !== '')
+                };
+                jobEditCallback(updatedJob, currentJobIndex);
+            }
+            hideJobEditModal();
+        });
+
+        jobEditModalCancelBtn.addEventListener('click', () => {
+            hideJobEditModal();
+            showMessage('Job entry edit cancelled.', 'info');
+        });
+
+        function showMessage(message, type = 'info') {
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = `
+                position: fixed;
+                top: 80px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: ${type === 'error' ? '#dc3545' : type === 'success' ? '#28a745' : '#007bff'};
+                color: white;
+                padding: 10px 20px;
+                border-radius: 5px;
+                z-index: 1000;
+                opacity: 0;
+                transition: opacity 0.5s ease-in-out;
+            `;
+            messageDiv.textContent = message;
+            document.body.appendChild(messageDiv);
+
+            setTimeout(() => {
+                messageDiv.style.opacity = '1';
+            }, 10); // Small delay to trigger transition
+
+            setTimeout(() => {
+                messageDiv.style.opacity = '0';
+                messageDiv.addEventListener('transitionend', () => messageDiv.remove());
+            }, 3000);
+        }
+
+        // --- UI Rendering Functions ---
+        function renderTitlePage() {
+            document.getElementById('title-heading').textContent = portfolioData['title-page'].heading;
+            document.getElementById('title-summary').textContent = portfolioData['title-page'].summary;
+
+            if (isAdmin) {
+                document.getElementById('edit-title-heading').value = portfolioData['title-page'].heading;
+                document.getElementById('edit-title-summary').value = portfolioData['title-page'].summary;
+            }
+        }
+
+        function renderAboutMe() {
+            console.log("renderAboutMe called. isAdmin:", isAdmin); // Debug log
+            const traitsGrid = document.getElementById('about-me-traits');
+            traitsGrid.innerHTML = '';
+            portfolioData['about-me'].traits.forEach((trait, index) => {
+                const traitItem = document.createElement('div');
+                traitItem.className = 'trait-item';
+                traitItem.innerHTML = `<span>${trait}</span>`;
+                if (isAdmin) { // This condition determines if edit/delete buttons are added
+                    const editButtons = document.createElement('div');
+                    editButtons.className = 'edit-buttons';
+                    const editBtn = document.createElement('button');
+                    editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+                    editBtn.onclick = () => editTrait(index, trait);
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                    deleteBtn.onclick = () => deleteTrait(index);
+                    editButtons.appendChild(editBtn);
+                    editButtons.appendChild(deleteBtn);
+                    traitItem.appendChild(editButtons); // Corrected line
+                }
+                traitsGrid.appendChild(traitItem);
+            });
+        }
+
+        function editTrait(index, currentTrait) {
+            console.log("Edit trait clicked for index:", index); // Debug log
+            showInputModal('Edit Trait', 'Enter new trait title:', currentTrait, (newTrait) => {
+                if (newTrait !== null && newTrait.trim() !== '') {
+                    portfolioData['about-me'].traits[index] = newTrait.trim();
+                    renderAboutMe();
+                    saveData(); // Save data after editing
+                    showMessage('Trait updated successfully.', 'success');
+                } else if (newTrait !== null) { // If user clicked OK but input was empty
+                    showMessage('Trait title cannot be empty.', 'error');
+                }
+            });
+        }
+
+        function deleteTrait(index) {
+            console.log("Delete trait clicked for index:", index); // Debug log
+            showConfirmModal('Delete Trait', 'Are you sure you want to delete this trait?', (confirmed) => {
+                if (confirmed) {
+                    portfolioData['about-me'].traits.splice(index, 1);
+                    renderAboutMe();
+                    saveData(); // Save data after deleting
+                    showMessage('Trait deleted successfully.', 'success');
+                } else {
+                    showMessage('Deletion cancelled.', 'info');
+                }
+            });
+        }
+
+        function renderProfessionalJourney() {
+            const jobEntriesDiv = document.getElementById('job-entries');
+            jobEntriesDiv.innerHTML = '';
+
+            portfolioData['professional-journey'].jobs.forEach((job, index) => {
+                const jobDiv = document.createElement('div');
+                jobDiv.className = 'job-entry';
+                jobDiv.innerHTML = `
+                    <h3>${job.title}</h3>
+                    <p><strong>Company:</strong> ${job.company}</p>
+                    <p><strong>Duration:</strong> ${job.duration}</p>
+                    <div class="responsibilities">
+                        <h4>Roles & Responsibilities:</h4>
+                        <ul>
+                            ${job.responsibilities.map(resp => `<li>${resp}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                if (isAdmin) {
+                    const editButtons = document.createElement('div');
+                    editButtons.className = 'edit-buttons';
+                    editButtons.style.position = 'absolute';
+                    editButtons.style.top = '10px';
+                    editButtons.style.right = '10px';
+                    editButtons.style.display = 'flex';
+                    editButtons.style.gap = '5px';
+
+                    const editBtn = document.createElement('button');
+                    editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+                    editBtn.style.background = 'none';
+                    editBtn.style.color = 'var(--secondary-color)';
+                    editBtn.style.padding = '5px';
+                    editBtn.style.fontSize = '1rem';
+                    editBtn.onclick = () => editJobEntry(index);
+
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                    deleteBtn.style.background = 'none';
+                    deleteBtn.style.color = 'var(--secondary-color)';
+                    deleteBtn.style.padding = '5px';
+                    deleteBtn.style.fontSize = '1rem';
+                    deleteBtn.onclick = () => deleteJobEntry(index);
+
+                    editButtons.appendChild(editBtn);
+                    editButtons.appendChild(deleteBtn);
+                    jobDiv.appendChild(editButtons);
+                }
+                jobEntriesDiv.appendChild(jobDiv);
+            });
+
+            // Render skills, certifications, tools, achievements in 2 columns
+            const pjData = portfolioData['professional-journey'];
+            const skillsToolsHtml = `
+                <div class="skills-tools-grid">
+                    <div>
+                        <h3>Skills</h3>
+                        <ul class="two-column-list">${pjData.skills.map(s => `<li>${s}</li>`).join('')}</ul>
+                    </div>
+                    <div>
+                        <h3>Software Skills & Tools</h3>
+                        <ul class="two-column-list">${pjData.tools.map(t => `<li>${t}</li>`).join('')}</ul>
+                    </div>
+                </div>
+                <h3>Certifications</h3>
+                <ul>${pjData.certifications.map(c => `<li>${c}</li>`).join('')}</ul>
+                <h3>Key Achievements</h3>
+                <ul>${pjData.achievements.map(a => `<li>${a}</li>`).join('')}</ul>
+            `;
+
+            jobEntriesDiv.insertAdjacentHTML('beforeend', skillsToolsHtml);
+
+            if (isAdmin) {
+                document.getElementById('edit-skills').value = pjData.skills.join('\n');
+                document.getElementById('edit-certifications').value = pjData.certifications.join('\n');
+                document.getElementById('edit-tools').value = pjData.tools.join('\n');
+                document.getElementById('edit-achievements').value = pjData.achievements.join('\n');
+            }
+        }
+
+        function editJobEntry(index) {
+            const job = portfolioData['professional-journey'].jobs[index];
+            showJobEditModal(job, index, (updatedJob, jobIndex) => {
+                if (updatedJob.title.trim() === '' || updatedJob.company.trim() === '' || updatedJob.duration.trim() === '') {
+                    showMessage('Job Title, Company Name, and Duration cannot be empty.', 'error');
+                    return;
+                }
+                portfolioData['professional-journey'].jobs[jobIndex] = updatedJob;
+                renderProfessionalJourney();
+                saveData();
+                showMessage('Job entry updated successfully.', 'success');
+            });
+        }
+
+        function deleteJobEntry(index) {
+            showConfirmModal('Delete Job Entry', 'Are you sure you want to delete this job entry?', (confirmed) => {
+                if (confirmed) {
+                    portfolioData['professional-journey'].jobs.splice(index, 1);
+                    renderProfessionalJourney();
+                    saveData();
+                    showMessage('Job entry deleted successfully.', 'success');
+                } else {
+                    showMessage('Deletion cancelled.', 'info');
+                }
+            });
+        }
+
+        function renderCreativePortfolio() {
+            document.getElementById('creative-summary').textContent = portfolioData['creative-portfolio'].summary;
+
+            // Render Sports as a list in 2 columns
+            const sportsContentUl = document.getElementById('sports-content');
+            sportsContentUl.innerHTML = portfolioData['creative-portfolio'].sports.split('\n').map(item => `<li>${item.trim()}</li>`).join('');
+
+            // Render Extra-Curricular Activities as a list in 2 columns
+            const extraCurricularContentUl = document.getElementById('extra-curricular-content');
+            extraCurricularContentUl.innerHTML = portfolioData['creative-portfolio'].extraCurricular.split('\n').map(item => `<li>${item.trim()}</li>`).join('');
+
+            // Render Hobbies as a list in 2 columns
+            const hobbiesContentUl = document.getElementById('hobbies-content');
+            hobbiesContentUl.innerHTML = portfolioData['creative-portfolio'].hobbies.split('\n').map(item => `<li>${item.trim()}</li>`).join('');
+
+            if (isAdmin) {
+                document.getElementById('edit-sports-content').value = portfolioData['creative-portfolio'].sports;
+                document.getElementById('edit-extra-curricular-content').value = portfolioData['creative-portfolio'].extraCurricular;
+                document.getElementById('edit-hobbies-content').value = portfolioData['creative-portfolio'].hobbies;
+            }
+        }
+
+        function renderBlogUpdates() {
+            const blogPostsDiv = document.getElementById('blog-posts');
+            blogPostsDiv.innerHTML = '';
+            portfolioData['blog-updates'].posts.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by date descending
+
+            portfolioData['blog-updates'].posts.forEach((post, index) => {
+                const postDiv = document.createElement('div');
+                postDiv.className = 'blog-post';
+                postDiv.innerHTML = `
+                    <h3>${post.title}</h3>
+                    <p class="post-meta">Published on: ${post.date}</p>
+                    <p>${post.content}</p>
+                    ${post.image ? `<img src="${post.image}" alt="${post.title}">` : ''}
+                `;
+                if (isAdmin) {
+                    const adminControlsDiv = document.createElement('div');
+                    adminControlsDiv.className = 'admin-controls';
+                    adminControlsDiv.style.marginTop = '15px';
+                    adminControlsDiv.style.display = 'flex';
+                    adminControlsDiv.style.gap = '10px';
+
+                    const editBtn = document.createElement('button');
+                    editBtn.innerHTML = '<i class="fas fa-edit"></i> Edit';
+                    editBtn.onclick = () => editBlogPost(index);
+
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.innerHTML = '<i class="fas fa-trash"></i> Delete';
+                    deleteBtn.onclick = () => deleteBlogPost(index);
+
+                    adminControlsDiv.appendChild(editBtn);
+                    adminControlsDiv.appendChild(deleteBtn);
+                    postDiv.appendChild(adminControlsDiv);
+                }
+                blogPostsDiv.appendChild(postDiv);
+            });
+        }
+
+        function editBlogPost(index) {
+            const post = portfolioData['blog-updates'].posts[index];
+            showInputModal('Edit Post Title', 'Enter new post title:', post.title, (newTitle) => {
+                if (newTitle === null) { showMessage('Post title edit cancelled.', 'info'); return; }
+                if (newTitle.trim() === '') { showMessage('Post title cannot be empty.', 'error'); return; }
+
+                showInputModal('Edit Post Content', 'Enter new post content:', post.content, (newContent) => {
+                    if (newContent === null) { showMessage('Post content edit cancelled.', 'info'); return; }
+                    if (newContent.trim() === '') { showMessage('Post content cannot be empty.', 'error'); return; }
+
+                    post.title = newTitle.trim();
+                    post.content = newContent.trim();
+                    renderBlogUpdates();
+                    saveData();
+                    showMessage('Blog post updated successfully.', 'success');
+                }, true); // Pass true for isTextArea for blog content
+            });
+        }
+
+        function deleteBlogPost(index) {
+            showConfirmModal('Delete Blog Post', 'Are you sure you want to delete this blog post?', (confirmed) => {
+                if (confirmed) {
+                    portfolioData['blog-updates'].posts.splice(index, 1);
+                    renderBlogUpdates();
+                    saveData();
+                    showMessage('Blog post deleted successfully.', 'success');
+                } else {
+                    showMessage('Deletion cancelled.', 'info');
+                }
+            });
+        }
+
+        function renderUserFormsLog() {
+            const logBody = document.getElementById('user-forms-log-body');
+            logBody.innerHTML = '';
+
+            // Display only the latest 5, but allow scrolling for all
+            const messagesToDisplay = userFormsLog.slice(-5).reverse(); // Latest 5, reversed for newest on top
+
+            messagesToDisplay.forEach((msg, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${msg.name}</td>
+                    <td>${msg.email}</td>
+                    <td>${msg.message}</td>
+                    <td>${new Date(msg.timestamp).toLocaleString()}</td>
+                    <td class="action-buttons">
+                        <button class="delete-form-msg" data-index="${index}"><i class="fas fa-trash"></i> Delete</button>
+                    </td>
+                `;
+                logBody.appendChild(row);
+            });
+
+            // Add event listeners for delete buttons
+            logBody.querySelectorAll('.delete-form-msg').forEach(button => {
+                button.onclick = (event) => {
+                    const indexToDelete = userFormsLog.length - 1 - parseInt(event.target.closest('button').dataset.index); // Adjust index for actual array
+                    deleteFormMessage(indexToDelete);
+                };
+            });
+        }
+
+        function deleteFormMessage(index) {
+            showConfirmModal('Delete Message', 'Are you sure you want to delete this message?', (confirmed) => {
+                if (confirmed) {
+                    if (index >= 0 && index < userFormsLog.length) {
+                        lastDeletedFormMessage = { data: userFormsLog[index], originalIndex: index };
+                        userFormsLog.splice(index, 1);
+                        renderUserFormsLog(); // Re-render to reflect deletion
+                        showUndoOption();
+                        saveData(); // Save data after deleting
+                        showMessage('Message deleted successfully.', 'success');
+                    }
+                } else {
+                    showMessage('Deletion cancelled.', 'info');
+                }
+            });
+        }
+
+        function showUndoOption() {
+            const logBody = document.getElementById('user-forms-log-body');
+            const existingUndo = logBody.querySelector('.undo-message-row');
+            if (existingUndo) existingUndo.remove();
+
+            if (lastDeletedFormMessage) {
+                const undoRow = document.createElement('tr');
+                undoRow.className = 'undo-message-row';
+                undoRow.innerHTML = `
+                    <td colspan="4" class="text-center" style="padding: 10px; background-color: #e6ffe6;">
+                        Message deleted. <button id="undo-delete-btn" style="background-color: #4CAF50; padding: 5px 10px; font-size: 0.8rem;">Undo</button>
+                    </td>
+                    <td></td>
+                `;
+                logBody.prepend(undoRow); // Add to top for visibility
+
+                document.getElementById('undo-delete-btn').onclick = undoDeleteFormMessage;
+            }
+        }
+
+        function undoDeleteFormMessage() {
+            if (lastDeletedFormMessage) {
+                userFormsLog.splice(lastDeletedFormMessage.originalIndex, 0, lastDeletedFormMessage.data);
+                lastDeletedFormMessage = null; // Clear undo data
+                renderUserFormsLog(); // Re-render to show restored message
+                saveData(); // Save data after undoing
+                showMessage('Message restored successfully.', 'success');
+            }
+        }
+
+        function renderGuestRestrictionPanel() {
+            const checkboxesDiv = document.getElementById('guest-visibility-checkboxes');
+            checkboxesDiv.innerHTML = '';
+
+            const sections = [
+                { id: 'title-page', name: 'Home/Title Page' },
+                { id: 'about-me', name: 'About Me' },
+                { id: 'professional-journey', name: 'Professional Journey' },
+                { id: 'creative-portfolio', name: 'Creative Portfolio' },
+                { id: 'blog-updates', name: 'Blog & Updates' },
+                { id: 'contact-me', name: 'Contact Me' }
+            ];
+
+            sections.forEach(section => {
+                const label = document.createElement('label');
+                label.innerHTML = `
+                    <input type="checkbox" id="guest-visibility-${section.id}" data-section-id="${section.id}"
+                        ${guestSectionVisibility[section.id] ? 'checked' : ''}>
+                    ${section.name}
+                `;
+                checkboxesDiv.appendChild(label);
+            });
+        }
+
+        function applyGuestRestrictions() {
+            // Hide/show sections based on guestSectionVisibility
+            const allSections = document.querySelectorAll('section');
+            allSections.forEach(section => {
+                const sectionId = section.id;
+                if (guestSectionVisibility[sectionId] === false && !isAdmin) {
+                    section.classList.add('hidden');
+                } else {
+                    section.classList.remove('hidden');
+                }
+            });
+
+            // Hide admin-only elements if not admin
+            adminOnlyElements.forEach(el => {
+                if (!isAdmin) {
+                    el.classList.add('hidden');
+                } else {
+                    el.classList.remove('hidden');
+                }
+            });
+
+            // Hide/show admin controls within sections
+            adminControls.forEach(el => {
+                if (!isAdmin) {
+                    el.classList.add('hidden');
+                } else {
+                    el.classList.remove('hidden');
+                }
+            });
+        }
+
+        function renderAllContent() {
+            renderTitlePage();
+            renderAboutMe();
+            renderProfessionalJourney();
+            renderCreativePortfolio();
+            renderBlogUpdates();
+            if (isAdmin) {
+                renderUserFormsLog();
+                renderGuestRestrictionPanel();
+            }
+            applyGuestRestrictions();
+        }
+
+        // --- Event Listeners ---
+        adminLoginBtn.addEventListener('click', () => {
+            loginWindow1.classList.add('hidden');
+            loginWindow2.classList.remove('hidden');
+            adminUsernameInput.value = '';
+            adminPasswordInput.value = '';
+            loginMessage.textContent = '';
+        });
+
+        guestLoginBtn.addEventListener('click', () => {
+            loginMessage.textContent 
