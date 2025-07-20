@@ -278,7 +278,7 @@
 
         /* Title Page */
         #title-page {
-            min-height: 80vh;
+            min-height: auto; /* Changed from 40vh to auto for minimum height */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -287,7 +287,7 @@
             /* Updated background for darker, professional, creative appeal */
             background: linear-gradient(135deg, #004d40, #1a237e); /* Deep Teal to Dark Navy */
             color: white; /* Changed text color for contrast */
-            padding: 40px 20px;
+            padding: 10px 20px; /* Reduced vertical padding from 20px to 10px */
         }
 
         #title-page h1 {
@@ -1004,16 +1004,10 @@
 </head>
 <body>
 
-    <!-- Login Modal -->
-    <div id="login-modal">
-        <div class="login-content" id="login-window-1">
-            <h2>Welcome to Kapil Mestry's Portfolio</h2>
-            <button id="admin-login-btn">Admin Login</button>
-            <button id="guest-login-btn">Continue as Guest</button>
-        </div>
-
-        <div class="login-content hidden" id="login-window-2">
-            <button class="back-button" id="back-to-window-1"><i class="fas fa-arrow-left"></i></button>
+    <!-- Login Modal - Now only contains window 2 -->
+    <div id="login-modal" class="hidden">
+        <div class="login-content" id="login-window-2">
+            <button class="back-button" id="back-to-guest-mode"><i class="fas fa-arrow-left"></i></button>
             <h2>Admin Login</h2>
             <input type="text" id="admin-username" placeholder="Username">
             <input type="password" id="admin-password" placeholder="Password">
@@ -1022,12 +1016,12 @@
         </div>
     </div>
 
-    <!-- Main Content (Hidden until login) -->
-    <div id="main-content" class="hidden">
+    <!-- Main Content -->
+    <div id="main-content">
         <!-- Sticky Header -->
         <header>
             <div class="logo">Kapil Mestry</div>
-            <button id="logout-btn" class="logout-btn">Logout</button>
+            <button id="logout-btn" class="logout-btn hidden">Logout</button>
         </header>
 
         <!-- Sticky Navigation -->
@@ -1044,7 +1038,8 @@
                 <li><a href="#creative-portfolio">Creative Portfolio</a></li>
                 <li><a href="#blog-updates">Blog & Updates</a></li>
                 <li><a href="#contact-me">Contact Me</a></li>
-                <li class="admin-only"><a href="#admin-panel-sections">Admin Panel</a></li>
+                <li id="admin-login-nav-item"><a href="#">Admin Login</a></li> <!-- Admin Login Nav Item -->
+                <li class="admin-only hidden"><a href="#admin-panel-sections">Admin Panel</a></li>
             </ul>
         </nav>
 
@@ -1325,11 +1320,10 @@
 
         // DOM Elements
         const loginModal = document.getElementById('login-modal');
-        const loginWindow1 = document.getElementById('login-window-1');
+        // Removed loginWindow1 as per request
         const loginWindow2 = document.getElementById('login-window-2');
-        const adminLoginBtn = document.getElementById('admin-login-btn');
-        const guestLoginBtn = document.getElementById('guest-login-btn');
-        const backToWindow1Btn = document.getElementById('back-to-window-1');
+        // Removed adminLoginBtn and guestLoginBtn as per request (from window1)
+        const backToGuestModeBtn = document.getElementById('back-to-guest-mode'); // Renamed from back-to-window-1
         const adminUsernameInput = document.getElementById('admin-username');
         const adminPasswordInput = document.getElementById('admin-password');
         const adminSubmitBtn = document.getElementById('admin-submit-btn');
@@ -1351,6 +1345,7 @@
         const pdfFontSizeInput = document.getElementById('pdf-font-size');
         const pdfLineHeightInput = document.getElementById('pdf-line-height');
         const savePdfFormattingBtn = document.getElementById('save-pdf-formatting-btn');
+        const adminLoginNavItem = document.getElementById('admin-login-nav-item'); // Get the new nav item
 
         // Custom Modal Elements
         const customConfirmModal = document.getElementById('custom-confirm-modal');
@@ -1492,6 +1487,12 @@
                 localStorage.setItem('userFormsLog', JSON.stringify(userFormsLog));
                 localStorage.setItem('guestSectionVisibility', JSON.stringify(guestSectionVisibility));
                 localStorage.setItem('pdfFormatting', JSON.stringify(pdfFormatting));
+                // Only save isAdmin state if it's an admin session
+                if (isAdmin) {
+                    localStorage.setItem('isAdminLoggedIn', 'true');
+                } else {
+                    localStorage.removeItem('isAdminLoggedIn'); // Clear admin persistence if not admin
+                }
                 showSavingMessage('✅ Data saved successfully.', 'success');
             } catch (e) {
                 console.error('Error saving data to localStorage:', e);
@@ -2062,6 +2063,20 @@
                     el.classList.remove('hidden');
                 }
             });
+
+            // Handle logout button visibility
+            if (!isAdmin) {
+                logoutBtn.classList.add('hidden');
+            } else {
+                logoutBtn.classList.remove('hidden');
+            }
+
+            // Handle Admin Login nav item visibility
+            if (!isAdmin) {
+                adminLoginNavItem.classList.remove('hidden'); // Show Admin Login link in guest mode
+            } else {
+                adminLoginNavItem.classList.add('hidden'); // Hide Admin Login link in admin mode
+            }
         }
 
         function renderAllContent() {
@@ -2074,17 +2089,478 @@
                 renderUserFormsLog();
                 renderGuestRestrictionPanel();
             }
-            applyGuestRestrictions();
+            applyGuestRestrictions(); // Apply visibility rules after rendering content
         }
 
         // --- Event Listeners ---
-        adminLoginBtn.addEventListener('click', () => {
-            loginWindow1.classList.add('hidden');
-            loginWindow2.classList.remove('hidden');
+        // Removed adminLoginBtn and guestLoginBtn event listeners as their buttons are removed from HTML
+
+        // Back to Guest Mode button click handler (from login-window-2)
+        backToGuestModeBtn.addEventListener('click', () => {
+            loginModal.classList.add('hidden'); // Hide the modal
+            mainContent.classList.remove('hidden'); // Show main content
+            // Ensure we are in guest mode
+            isAdmin = false;
+            isLoggedIn = true;
+            localStorage.removeItem('isAdminLoggedIn'); // Ensure admin persistence is cleared
+            loadData(); // Load latest data for guest mode
+            renderAllContent(); // Render content for guest mode
+        });
+
+        adminSubmitBtn.addEventListener('click', () => {
+            const username = adminUsernameInput.value;
+            const password = adminPasswordInput.value;
+
+            if (username === 'kapilalpop' && password === 'Kaps123$') {
+                loginMessage.textContent = 'Logging in as Admin...';
+                setTimeout(() => {
+                    isAdmin = true;
+                    isLoggedIn = true;
+                    localStorage.setItem('isAdminLoggedIn', 'true'); // Persist admin login state
+                    loginModal.classList.add('hidden');
+                    mainContent.classList.remove('hidden');
+                    loadData(); // Load latest data
+                    renderAllContent(); // Render content based on admin mode
+                }, 1000);
+            } else {
+                loginMessage.textContent = 'Incorrect credentials.';
+            }
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            saveData(); // Ensure data is saved before logging out
+            loginMessage.textContent = 'Logging Out...';
+            setTimeout(() => {
+                isAdmin = false; // Switch to guest mode
+                isLoggedIn = true; // Still "logged in" as guest
+                localStorage.removeItem('isAdminLoggedIn'); // Clear admin persistence
+
+                mainContent.classList.remove('hidden'); // Ensure main content is visible
+                loginModal.classList.add('hidden'); // Hide the modal
+                loginMessage.textContent = ''; // Clear message for next login
+                lastDeletedFormMessage = null; // Clear any unsaved undo state
+
+                loadData(); // Load latest data for guest mode
+                renderAllContent(); // Render content for guest mode
+            }, 1000);
+        });
+
+        hamburgerMenu.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close hamburger menu on nav link click
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Admin Login Nav Item click handler
+        adminLoginNavItem.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent default link behavior
+            mainContent.classList.add('hidden'); // Hide main content
+            loginModal.classList.remove('hidden'); // Show the modal
+            loginWindow2.classList.remove('hidden'); // Ensure window2 is visible
             adminUsernameInput.value = '';
             adminPasswordInput.value = '';
             loginMessage.textContent = '';
         });
 
-        guestLoginBtn.addEventListener('click', () => {
-            loginMessage.textContent 
+
+        // Save Section Buttons
+        saveSectionBtns.forEach(button => {
+            button.addEventListener('click', (event) => {
+                const sectionId = event.target.dataset.section;
+                if (sectionId === 'title-page') {
+                    portfolioData['title-page'].heading = document.getElementById('edit-title-heading').value;
+                    portfolioData['title-page'].summary = document.getElementById('edit-title-summary').value;
+                    renderTitlePage();
+                } else if (sectionId === 'about-me') {
+                    // About Me edits are handled by individual trait edit/delete functions
+                    // This button just triggers a save of the current state
+                    renderAboutMe(); // Ensure latest state is reflected before saving
+                } else if (sectionId === 'professional-journey') {
+                    portfolioData['professional-journey'].skills = document.getElementById('edit-skills').value.split('\n').map(s => s.trim()).filter(s => s !== '');
+                    portfolioData['professional-journey'].certifications = document.getElementById('edit-certifications').value.split('\n').map(c => c.trim()).filter(c => c !== '');
+                    portfolioData['professional-journey'].tools = document.getElementById('edit-tools').value.split('\n').map(t => t.trim()).filter(t => t !== '');
+                    portfolioData['professional-journey'].achievements = document.getElementById('edit-achievements').value.split('\n').map(a => a.trim()).filter(a => a !== '');
+                    renderProfessionalJourney();
+                } else if (sectionId === 'creative-portfolio') {
+                    portfolioData['creative-portfolio'].sports = document.getElementById('edit-sports-content').value;
+                    portfolioData['creative-portfolio'].extraCurricular = document.getElementById('edit-extra-curricular-content').value;
+                    // Removed creativeAchievements from here as it's no longer in the data model
+                    portfolioData['creative-portfolio'].hobbies = document.getElementById('edit-hobbies-content').value;
+                    renderCreativePortfolio();
+                } else if (sectionId === 'blog-updates') {
+                    // Blog updates are handled by individual add/edit/delete post functions
+                    // This button just triggers a save of the current state
+                    renderBlogUpdates(); // Ensure latest state is reflected before saving
+                } else if (sectionId === 'contact-me-log') {
+                    // User forms log is managed by its own delete/undo logic
+                    // This button just triggers a save of the current state
+                    renderUserFormsLog(); // Ensure latest state is reflected before saving
+                } else if (sectionId === 'guest-restrictions') {
+                    document.querySelectorAll('#guest-visibility-checkboxes input[type="checkbox"]').forEach(checkbox => {
+                        guestSectionVisibility[checkbox.dataset.sectionId] = checkbox.checked;
+                    });
+                    applyGuestRestrictions();
+                }
+                saveData();
+            });
+        });
+
+        // About Me - Add Trait
+        document.getElementById('add-trait-btn').addEventListener('click', () => {
+            const newTrait = document.getElementById('new-trait-title').value.trim();
+            if (newTrait) {
+                portfolioData['about-me'].traits.push(newTrait);
+                document.getElementById('new-trait-title').value = '';
+                renderAboutMe();
+                saveData(); // Save data after adding
+                showMessage('Trait added successfully.', 'success');
+            } else {
+                showMessage('Please enter a trait title.', 'error');
+            }
+        });
+
+        // Professional Journey - Add Job
+        document.getElementById('add-job-btn').addEventListener('click', () => {
+            const title = document.getElementById('new-job-title').value.trim();
+            const company = document.getElementById('new-company-name').value.trim();
+            const duration = document.getElementById('new-duration').value.trim();
+            const responsibilitiesText = document.getElementById('new-responsibilities').value.trim();
+
+            if (title && company && duration) {
+                const responsibilities = responsibilitiesText.split('\n').map(r => r.trim()).filter(r => r !== '');
+                portfolioData['professional-journey'].jobs.push({ title, company, duration, responsibilities });
+                document.getElementById('new-job-title').value = '';
+                document.getElementById('new-company-name').value = '';
+                document.getElementById('new-duration').value = '';
+                document.getElementById('new-responsibilities').value = '';
+                renderProfessionalJourney();
+                saveData(); // Save data after adding
+                showMessage('Job entry added successfully.', 'success');
+            } else {
+                showMessage('Please fill in all fields.', 'error');
+            }
+        });
+
+        // Blog & Updates - Add Post
+        document.getElementById('add-blog-post-btn').addEventListener('click', () => {
+            const title = document.getElementById('new-blog-title').value.trim();
+            const content = document.getElementById('new-blog-content').value.trim();
+            const imageFile = document.getElementById('new-blog-image').files[0];
+
+            if (title && content) {
+                const newPost = {
+                    id: 'post' + Date.now(),
+                    title: title,
+                    date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+                    content: content,
+                    image: ''
+                };
+
+                if (imageFile) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        newPost.image = e.target.result; // Base64 image
+                        portfolioData['blog-updates'].posts.push(newPost);
+                        document.getElementById('new-blog-title').value = '';
+                        document.getElementById('new-blog-content').value = '';
+                        document.getElementById('new-blog-image').value = ''; // Clear file input
+                        renderBlogUpdates();
+                        saveData(); // Save data after adding
+                        showMessage('Blog post added successfully with image.', 'success');
+                    };
+                    reader.readAsDataURL(imageFile);
+                } else {
+                    portfolioData['blog-updates'].posts.push(newPost);
+                    document.getElementById('new-blog-title').value = '';
+                    document.getElementById('new-blog-content').value = '';
+                    renderBlogUpdates();
+                    saveData(); // Save data after adding
+                    showMessage('Blog post added successfully.', 'success');
+                }
+            } else {
+                showMessage('Please enter a title and content for the blog post.', 'error');
+            }
+        });
+
+        // Contact Me - Form Submission
+        document.getElementById('contact-form').addEventListener('submit', (event) => {
+            event.preventDefault();
+            const name = document.getElementById('contact-name').value.trim();
+            const email = document.getElementById('contact-email').value.trim();
+            const message = document.getElementById('contact-message').value.trim();
+
+            if (name && email && message) {
+                userFormsLog.push({
+                    name: name,
+                    email: email,
+                    message: message,
+                    timestamp: Date.now()
+                });
+                document.getElementById('contact-name').value = '';
+                document.getElementById('contact-email').value = '';
+                document.getElementById('contact-message').value = '';
+                showMessage('Message sent successfully!', 'success');
+                saveData(); // Save new form entry
+                if (isAdmin) {
+                    renderUserFormsLog(); // Update admin log if admin is viewing
+                }
+            } else {
+                showMessage('Please fill in all fields.', 'error');
+            }
+        });
+
+        // PDF Generation Logic
+        downloadPdfBtn.addEventListener('click', () => {
+            pdfModal.classList.remove('hidden');
+            renderPdfSectionCheckboxes();
+            if (isAdmin) {
+                pdfAdminControls.classList.remove('hidden');
+                pdfFontSizeInput.value = pdfFormatting.fontSize;
+                pdfLineHeightInput.value = pdfFormatting.lineHeight;
+                updatePdfPreview(); // Call to update the text preview
+            } else {
+                pdfAdminControls.classList.add('hidden');
+            }
+        });
+
+        closePdfModalBtn.addEventListener('click', () => {
+            pdfModal.classList.add('hidden');
+        });
+
+        function renderPdfSectionCheckboxes() {
+            pdfSectionCheckboxes.innerHTML = '';
+            const sections = [
+                { id: 'title-page', name: 'Home/Title Page' },
+                { id: 'about-me', name: 'About Me' },
+                { id: 'professional-journey', name: 'Professional Journey' },
+                { id: 'creative-portfolio', name: 'Creative Portfolio' },
+                { id: 'blog-updates', name: 'Blog & Updates' },
+                { id: 'contact-me', name: 'Contact Me (Form Only)' }
+            ];
+
+            sections.forEach(section => {
+                // Only show sections allowed by guest restrictions if in guest mode
+                if (!isAdmin && !guestSectionVisibility[section.id]) {
+                    return;
+                }
+                const label = document.createElement('label');
+                label.innerHTML = `
+                    <input type="checkbox" data-section-id="${section.id}" checked>
+                    ${section.name}
+                `;
+                pdfSectionCheckboxes.appendChild(label);
+            });
+
+            // Add event listeners to checkboxes to update preview
+            pdfSectionCheckboxes.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', updatePdfPreview);
+            });
+        }
+
+        function updatePdfPreview() {
+            if (!isAdmin) return; // Only for admin
+            let previewContent = '';
+            const selectedSections = Array.from(pdfSectionCheckboxes.querySelectorAll('input:checked')).map(cb => cb.dataset.sectionId);
+
+            previewContent += 'Kapil Mestry is a result-oriented professional with a proven track record in engineering and creative problem-solving. Combining a strong technical background with creative passion, he demonstrates consistent leadership, project ownership, and a drive to deliver meaningful outcomes in both professional and personal endeavors.\n\n';
+
+            selectedSections.forEach(sectionId => {
+                let content = '';
+                let sectionTitle = '';
+
+                if (sectionId === 'title-page') {
+                    sectionTitle = portfolioData['title-page'].heading;
+                    content = portfolioData['title-page'].summary;
+                } else if (sectionId === 'about-me') {
+                    sectionTitle = 'About Me';
+                    content = `Influential Traits: ${portfolioData['about-me'].traits.join(', ')}`;
+                } else if (sectionId === 'professional-journey') {
+                    sectionTitle = 'Professional Journey';
+                    content = '';
+                    portfolioData['professional-journey'].jobs.forEach(job => {
+                        content += `Job Title: ${job.title}\n`;
+                        content += `Company: ${job.company}\n`;
+                        content += `Duration: ${job.duration}\n`;
+                        if (job.responsibilities.length > 0) {
+                            content += `Responsibilities:\n- ${job.responsibilities.join('\n- ')}\n`;
+                        }
+                        content += '\n';
+                    });
+                    content += `Skills: ${portfolioData['professional-journey'].skills.join(', ')}\n`;
+                    content += `Certifications: ${portfolioData['professional-journey'].certifications.join(', ')}\n`;
+                    content += `Software Skills & Tools: ${portfolioData['professional-journey'].tools.join(', ')}\n`;
+                    content += `Key Achievements: ${portfolioData['professional-journey'].achievements.join('; ')}\n`;
+                } else if (sectionId === 'creative-portfolio') {
+                    sectionTitle = 'Creative Portfolio';
+                    content = `${portfolioData['creative-portfolio'].summary}\n\n`;
+                    content += `Sports:\n- ${portfolioData['creative-portfolio'].sports.split('\n').map(item => item.trim()).join('\n- ')}\n`;
+                    content += `Extra-Curricular Activities:\n- ${portfolioData['creative-portfolio'].extraCurricular.split('\n').map(item => item.trim()).join('\n- ')}\n`;
+                    content += `Hobbies:\n- ${portfolioData['creative-portfolio'].hobbies.split('\n').map(item => item.trim()).join('\n- ')}\n`;
+                } else if (sectionId === 'blog-updates') {
+                    sectionTitle = 'Blog & Updates';
+                    content = '';
+                    portfolioData['blog-updates'].posts.forEach(post => {
+                        content += `Title: ${post.title}\n`;
+                        content += `Date: ${post.date}\n`;
+                        content += `Content: ${post.content}\n\n`;
+                    });
+                } else if (sectionId === 'contact-me') {
+                    sectionTitle = 'Contact Me';
+                    content = 'You can contact Kapil Mestry using the form on his website.';
+                }
+
+                if (content) {
+                    previewContent += `--- ${sectionTitle.toUpperCase()} ---\n\n`;
+                    previewContent += content + '\n\n';
+                }
+            });
+            pdfPreviewTextarea.value = previewContent;
+        }
+
+        savePdfFormattingBtn.addEventListener('click', () => {
+            pdfFormatting.fontSize = parseFloat(pdfFontSizeInput.value);
+            pdfFormatting.lineHeight = parseFloat(pdfLineHeightInput.value);
+            saveData();
+            showMessage('PDF formatting saved.', 'success');
+            updatePdfPreview(); // Update preview with new formatting (though it's mostly for text content now)
+        });
+
+        pdfFontSizeInput.addEventListener('input', updatePdfPreview);
+        pdfLineHeightInput.addEventListener('input', updatePdfPreview);
+
+
+        generatePdfBtn.addEventListener('click', () => {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            let y = 10; // Initial Y position
+            const margin = 10;
+            const lineHeight = pdfFormatting.fontSize * pdfFormatting.lineHeight;
+
+            // Add header/introductory text
+            doc.setFontSize(pdfFormatting.fontSize + 6); // Larger font for main title
+            doc.text('Kapil Mestry - Professional Profile', margin, y);
+            y += (pdfFormatting.fontSize + 6) * pdfFormatting.lineHeight + 15; // Space after main title
+
+            doc.setFontSize(pdfFormatting.fontSize); // Reset to normal font size
+            const introText = 'Kapil Mestry is a result-oriented professional with a proven track record in engineering and creative problem-solving. Combining a strong technical background with creative passion, he demonstrates consistent leadership, project ownership, and a drive to deliver meaningful outcomes in both professional and personal endeavors.';
+            let introLines = doc.splitTextToSize(introText, doc.internal.pageSize.getWidth() - 2 * margin);
+            introLines.forEach(line => {
+                if (y + lineHeight > doc.internal.pageSize.getHeight() - margin) {
+                    doc.addPage();
+                    y = margin;
+                }
+                doc.text(line, margin, y);
+                y += lineHeight;
+            });
+            y += 20; // Space after intro
+
+            const selectedSections = Array.from(pdfSectionCheckboxes.querySelectorAll('input:checked')).map(cb => cb.dataset.sectionId);
+
+            selectedSections.forEach(sectionId => {
+                let content = '';
+                let sectionTitle = '';
+
+                if (sectionId === 'title-page') {
+                    sectionTitle = portfolioData['title-page'].heading;
+                    content = portfolioData['title-page'].summary;
+                } else if (sectionId === 'about-me') {
+                    sectionTitle = 'About Me';
+                    content = `Influential Traits: ${portfolioData['about-me'].traits.join(', ')}`;
+                } else if (sectionId === 'professional-journey') {
+                    sectionTitle = 'Professional Journey';
+                    content = '';
+                    portfolioData['professional-journey'].jobs.forEach(job => {
+                        content += `Job Title: ${job.title}\n`;
+                        content += `Company: ${job.company}\n`;
+                        content += `Duration: ${job.duration}\n`;
+                        if (job.responsibilities.length > 0) {
+                            content += `Responsibilities:\n- ${job.responsibilities.join('\n- ')}\n`;
+                        }
+                        content += '\n';
+                    });
+                    content += `Skills: ${portfolioData['professional-journey'].skills.join(', ')}\n`;
+                    content += `Certifications: ${portfolioData['professional-journey'].certifications.join(', ')}\n`;
+                    content += `Software Skills & Tools: ${portfolioData['professional-journey'].tools.join(', ')}\n`;
+                    content += `Key Achievements: ${portfolioData['professional-journey'].achievements.join('; ')}\n`;
+                } else if (sectionId === 'creative-portfolio') {
+                    sectionTitle = 'Creative Portfolio';
+                    content = `${portfolioData['creative-portfolio'].summary}\n\n`;
+                    content += `Sports:\n- ${portfolioData['creative-portfolio'].sports.split('\n').map(item => item.trim()).join('\n- ')}\n`;
+                    content += `Extra-Curricular Activities:\n- ${portfolioData['creative-portfolio'].extraCurricular.split('\n').map(item => item.trim()).join('\n- ')}\n`;
+                    content += `Hobbies:\n- ${portfolioData['creative-portfolio'].hobbies.split('\n').map(item => item.trim()).join('\n- ')}\n`;
+                } else if (sectionId === 'blog-updates') {
+                    sectionTitle = 'Blog & Updates';
+                    content = '';
+                    portfolioData['blog-updates'].posts.forEach(post => {
+                        content += `Title: ${post.title}\n`;
+                        content += `Date: ${post.date}\n`;
+                        content += `Content: ${post.content}\n\n`;
+                    });
+                } else if (sectionId === 'contact-me') {
+                    sectionTitle = 'Contact Me';
+                    content = 'You can contact Kapil Mestry using the form on his website.';
+                }
+
+                if (content) {
+                    if (y + lineHeight * 3 > doc.internal.pageSize.getHeight() - margin) { // Check if new page is needed for title
+                        doc.addPage();
+                        y = margin;
+                    }
+                    doc.setFontSize(pdfFormatting.fontSize + 4); // Larger font for section title
+                    doc.text(sectionTitle.toUpperCase(), margin, y);
+                    y += (pdfFormatting.fontSize + 4) * pdfFormatting.lineHeight + 10; // Space after title
+
+                    doc.setFontSize(pdfFormatting.fontSize); // Reset to normal font size
+                    const lines = doc.splitTextToSize(content, doc.internal.pageSize.getWidth() - 2 * margin);
+                    lines.forEach(line => {
+                        if (y + lineHeight > doc.internal.pageSize.getHeight() - margin) {
+                            doc.addPage();
+                            y = margin;
+                        }
+                        doc.text(line, margin, y);
+                        y += lineHeight;
+                    });
+                    y += 20; // Space after section
+                }
+            });
+
+            doc.save('Kapil_Mestry_Profile.pdf');
+        });
+
+        // Initial load and render on page load
+        window.onload = () => {
+            // Check localStorage for ADMIN state
+            const isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn');
+
+            if (isAdminLoggedIn === 'true') {
+                // Admin state found in localStorage
+                isAdmin = true;
+                isLoggedIn = true;
+                loginModal.classList.add('hidden'); // Ensure login modal is hidden
+                mainContent.classList.remove('hidden'); // Ensure main content is visible
+                loadData();
+                renderAllContent();
+            } else {
+                // Default to guest mode if no admin state is found
+                isAdmin = false;
+                isLoggedIn = true; // Set isLoggedIn to true for guest mode
+                loginModal.classList.add('hidden'); // Ensure login modal is hidden
+                mainContent.classList.remove('hidden'); // Ensure main content is visible
+                loadData(); // Load latest data for guest mode
+                renderAllContent(); // Render content for guest mode
+            }
+        };
+
+        // Save data on beforeunload (only content data, login state handled by specific functions)
+        window.addEventListener('beforeunload', () => {
+            saveData();
+        });
+
+    </script>
+</body>
+</html>
