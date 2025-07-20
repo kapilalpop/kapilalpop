@@ -1,0 +1,324 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kapil Mestry - Blog & Updates</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* General Styles */
+        :root {
+            --primary-color: #3f51b5; /* Indigo */
+            --secondary-color: #757575; /* Medium Gray */
+            --accent-color: #ff4081; /* Pink/Magenta */
+            --background-color: #f5f5f5; /* Off-white */
+            --text-color: #212121; /* Dark Gray */
+            --light-gray: #e0e0e0; /* Lighter Gray for borders/backgrounds */
+            --dark-gray: #424242; /* Darker Gray for headers/strong elements */
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--dark-gray);
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #283593; /* Darker Indigo */
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #283593; /* Darker Indigo */
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Header for Blog UI */
+        header {
+            background: linear-gradient(135deg, #004d40, #1a237e); /* Deep Teal to Dark Navy */
+            color: white;
+            padding: 20px 30px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #e0e0e0;
+        }
+
+        .back-to-portfolio-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-to-portfolio-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Main Content Area */
+        main {
+            flex-grow: 1; /* Allows main content to take up available space */
+            padding: 40px 20px;
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        /* Blog Post Styling */
+        .blog-post {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .blog-post:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .blog-post h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .blog-post .post-meta {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        .blog-post p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .blog-post img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            margin-bottom: 20px;
+            display: block; /* Ensures image takes full width and new line */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+            header p {
+                font-size: 1rem;
+            }
+            .back-to-portfolio-btn {
+                top: 15px;
+                left: 15px;
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+            main {
+                padding: 20px 15px;
+                margin: 15px auto;
+            }
+            .blog-post h2 {
+                font-size: 1.5rem;
+            }
+            .blog-post p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            header p {
+                font-size: 0.9rem;
+            }
+            .back-to-portfolio-btn {
+                position: static; /* Remove absolute positioning */
+                margin-bottom: 15px;
+                width: fit-content;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="javascript:void(0);" class="back-to-portfolio-btn" id="back-to-portfolio-blog-btn">
+            <i class="fas fa-arrow-left"></i> Back to Portfolio
+        </a>
+        <h1>Kapil Mestry</h1>
+        <p>Product Design and Development Engineer | Six Sigma Green Belt | AI Tools Expert</p>
+        <p>My Latest Thoughts & Updates</p>
+    </header>
+
+    <main id="blog-posts-container">
+        <!-- Blog posts will be loaded here by JavaScript -->
+        <p id="no-posts-message" style="text-align: center; color: var(--secondary-color); margin-top: 50px;">
+            No blog posts available.
+        </p>
+    </main>
+
+    <script>
+        // Function to load blog data from localStorage
+        function loadBlogData() {
+            try {
+                const portfolioDataString = localStorage.getItem('portfolioData');
+                if (portfolioDataString) {
+                    const portfolioData = JSON.parse(portfolioDataString);
+                    return portfolioData['blog-updates'] ? portfolioData['blog-updates'].posts : [];
+                }
+            } catch (e) {
+                console.error('Error loading portfolio data from localStorage:', e);
+            }
+            return [];
+        }
+
+        // Function to render blog posts
+        function renderBlogPosts() {
+            const blogPosts = loadBlogData();
+            const container = document.getElementById('blog-posts-container');
+            container.innerHTML = ''; // Clear existing content
+
+            if (blogPosts.length === 0) {
+                container.innerHTML = `
+                    <p id="no-posts-message" style="text-align: center; color: var(--secondary-color); margin-top: 50px;">
+                        No blog posts available. Please add some from the main portfolio's admin panel.
+                    </p>
+                `;
+                return;
+            }
+
+            // Sort posts by date descending (newest first)
+            blogPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            blogPosts.forEach(post => {
+                const postDiv = document.createElement('div');
+                postDiv.className = 'blog-post';
+                postDiv.innerHTML = `
+                    <h2>${post.title}</h2>
+                    <p class="post-meta">Published on: ${post.date}</p>
+                    <p>${post.content}</p>
+                    ${post.image ? `<img src="${post.image}" alt="${post.title}">` : ''}
+                `;
+                container.appendChild(postDiv);
+            });
+        }
+
+        // Event listener for the "Back to Portfolio" button
+        document.getElementById('back-to-portfolio-blog-btn').addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent default link behavior
+            // Redirect to the main portfolio page, showing the login modal
+            window.location.href = window.location.origin + '/kapil-mestry-portfolio.html?showLogin=true';
+        });
+
+        // Render posts when the page loads
+        window.onload = renderBlogPosts;
+    </script>
+</body>
+</html>
